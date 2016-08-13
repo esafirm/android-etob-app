@@ -2,15 +2,15 @@ package com.etob.android.features.common;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import com.etob.android.BoilerplateApplication;
+import com.etob.android.EtobApp;
 import com.etob.android.di.component.ActivityComponent;
+import com.etob.android.di.component.ConfigPersistentComponent;
+import com.etob.android.di.component.DaggerConfigPersistentComponent;
+import com.etob.android.di.module.ActivityModule;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import timber.log.Timber;
-import com.etob.android.di.component.ConfigPersistentComponent;
-import com.incendiary.androidboilerplate.di.component.DaggerConfigPersistentComponent;
-import com.etob.android.di.module.ActivityModule;
 
 /**
  * Abstract activity that every other Activity in this application must implement. It handles
@@ -43,7 +43,7 @@ public class BaseActivity extends AppCompatActivity {
     if (!sComponentsMap.containsKey(mActivityId)) {
       Timber.i("Creating new ConfigPersistentComponent id=%d", mActivityId);
       configPersistentComponent = DaggerConfigPersistentComponent.builder()
-          .applicationComponent(BoilerplateApplication.component())
+          .applicationComponent(EtobApp.component())
           .build();
       sComponentsMap.put(mActivityId, configPersistentComponent);
     } else {

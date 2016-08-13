@@ -1,12 +1,17 @@
 package com.etob.android.data.local;
 
 import android.app.Application;
+import com.etob.android.BuildConfig;
+import com.etob.android.data.model.Config;
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
 import com.orhanobut.hawk.LogLevel;
-import com.incendiary.androidboilerplate.BuildConfig;
 
 public class Preferences {
+
+  public class Key {
+    public static final String CONFIG = "Key.Config";
+  }
 
   private static Preferences INSTANCE;
 
@@ -27,5 +32,29 @@ public class Preferences {
             : LogLevel.NONE)
         .buildRx()
         .subscribe();
+  }
+
+  /* --------------------------------------------------- */
+  /* > Data */
+  /* --------------------------------------------------- */
+
+  public static void saveConfig(Config config) {
+    put(Key.CONFIG, config);
+  }
+
+  public static Config getConfig() {
+    return get(Key.CONFIG);
+  }
+
+  /* --------------------------------------------------- */
+  /* > Common */
+  /* --------------------------------------------------- */
+
+  private static void put(String key, Object o) {
+    Hawk.putObservable(key, o).subscribe();
+  }
+
+  private static <T> T get(String key) {
+    return Hawk.get(key);
   }
 }

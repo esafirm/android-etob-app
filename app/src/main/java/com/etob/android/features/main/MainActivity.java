@@ -1,89 +1,77 @@
 package com.etob.android.features.main;
 
-import android.content.Context;
-import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
-
-import java.util.Collections;
-import java.util.List;
-
-import javax.inject.Inject;
-
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.incendiary.androidboilerplate.R;
-import com.etob.android.data.SyncService;
-import com.etob.android.data.model.Ribot;
+import com.bumptech.glide.Glide;
+import com.etob.android.R;
+import com.etob.android.data.model.Config;
 import com.etob.android.features.common.BaseActivity;
-import com.etob.android.util.DialogFactory;
+import com.etob.android.util.ActivityHelper;
+import com.etob.android.util.glide.CropCircleTransformation;
+import com.etob.android.util.rx.RxGoogleMap;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity implements MainMvpView {
 
-    private static final String EXTRA_TRIGGER_SYNC_FLAG =
-            "uk.co.ribot.androidboilerplate.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
+  @BindView(R.id.imgContent) ImageView imgContent;
+  @BindView(R.id.txtName) TextView txtName;
+  @BindView(R.id.txtCaption) TextView txtBalance;
+  @BindView(R.id.swipeRefreshView) SwipeRefreshLayout swipeRefreshLayout;
 
-    @Inject MainPresenter mMainPresenter;
-    @Inject RibotsAdapter mRibotsAdapter;
+  @Inject MainPresenter presenter;
 
-    @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
+  private GoogleMap mGoogleMap;
 
-    /**
-     * Return an Intent to start this Activity.
-     * triggerDataSyncOnCreate allows disabling the background sync service onCreate. Should
-     * only be set to false during testing.
-     */
-    public static Intent getStartIntent(Context context, boolean triggerDataSyncOnCreate) {
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(EXTRA_TRIGGER_SYNC_FLAG, triggerDataSyncOnCreate);
-        return intent;
-    }
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    activityComponent().inject(this);
+    setContentView(R.layout.activity_main);
+    ButterKnife.bind(this);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        activityComponent().inject(this);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+    activityComponent().inject(this);
 
-        mRecyclerView.setAdapter(mRibotsAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mMainPresenter.attachView(this);
-        mMainPresenter.loadRibots();
+    presenter.attachView(this);
+    presenter.loadProfile();
 
-        if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
-            startService(SyncService.getStartIntent(this));
-        }
-    }
+    swipeRefreshLayout.setDistanceToTriggerSync(Integer.MAX_VALUE);
+    swipeRefreshLayout.setColorSchemeResources(R.color.accent);
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    SupportMapFragment mapFragment = ActivityHelper.findFragment(this, R.id.map);
+    RxGoogleMap.bind(mapFragment).subscribe(googleMap -> {
+      mGoogleMap = googleMap;
+      presenter.loadCurrentLocation(this);
+    });
+  }
 
-        mMainPresenter.detachView();
-    }
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    presenter.detachView();
+  }
 
-    /***** MVP View methods implementation *****/
+  @Override public void showProfile(Config.ProfileEntity profileEntity) {
+    Glide.with(this)
+        .load(profileEntity.getPhoto())
+        .bitmapTransform(new CropCircleTransformation(this))
+        .into(imgContent);
 
-    @Override
-    public void showRibots(List<Ribot> ribots) {
-        mRibotsAdapter.setRibots(ribots);
-        mRibotsAdapter.notifyDataSetChanged();
-    }
+    txtName.setText(profileEntity.getName());
+    txtBalance.setText(profileEntity.getBalance());
+  }
 
-    @Override
-    public void showError() {
-        DialogFactory.createGenericErrorDialog(this, getString(R.string.error_loading_ribots))
-                .show();
-    }
+  @Override public void showCurrentLocation(Location location) {
+  }
 
-    @Override
-    public void showRibotsEmpty() {
-        mRibotsAdapter.setRibots(Collections.<Ribot>emptyList());
-        mRibotsAdapter.notifyDataSetChanged();
-        Toast.makeText(this, R.string.empty_ribots, Toast.LENGTH_LONG).show();
-    }
+  @Override public void showError(Throwable throwable) {
+  }
 
+  @Override public void showLoading(boolean isLoading) {
+    swipeRefreshLayout.setRefreshing(isLoading);
+  }
 }

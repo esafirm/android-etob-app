@@ -1,9 +1,9 @@
 package com.etob.android.di.component;
 
 import com.etob.android.di.ConfigPersistent;
+import com.etob.android.di.module.ActivityModule;
 import com.etob.android.features.common.BaseActivity;
 import dagger.Component;
-import com.etob.android.di.module.ActivityModule;
 
 /**
  * A dagger component that will live during the lifecycle of an Activity but it won't

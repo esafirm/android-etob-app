@@ -1,9 +1,8 @@
 package com.etob.android.di.module;
 
+import com.etob.android.data.remote.ApiService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.etob.android.data.remote.ApiService;
-import com.ryanharter.auto.value.gson.AutoValueGsonTypeAdapterFactory;
 import dagger.Module;
 import dagger.Provides;
 import java.util.concurrent.TimeUnit;
@@ -23,9 +22,7 @@ import timber.log.Timber;
   private static final String ENDPOINT = "http://128.199.109.31/";
 
   @Singleton @Provides Gson provideGson() {
-    return new GsonBuilder().registerTypeAdapterFactory(new AutoValueGsonTypeAdapterFactory())
-        .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-        .create();
+    return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").create();
   }
 
   @Singleton @Provides OkHttpClient provideOkHttpClient() {

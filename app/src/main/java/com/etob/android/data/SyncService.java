@@ -6,14 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
-import com.etob.android.util.NetworkUtil;
-import com.etob.android.BoilerplateApplication;
-import com.etob.android.data.model.Ribot;
+import com.etob.android.EtobApp;
 import com.etob.android.util.AndroidComponentUtil;
+import com.etob.android.util.NetworkUtil;
 import javax.inject.Inject;
-import rx.Observer;
 import rx.Subscription;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class SyncService extends Service {
@@ -31,42 +28,7 @@ public class SyncService extends Service {
 
   @Override public void onCreate() {
     super.onCreate();
-    BoilerplateApplication.component().inject(this);
-  }
-
-  @Override public int onStartCommand(Intent intent, int flags, final int startId) {
-    Timber.i("Starting sync...");
-
-    if (!NetworkUtil.isNetworkConnected(this)) {
-      Timber.i("Sync canceled, connection not available");
-      AndroidComponentUtil.toggleComponent(this, SyncOnConnectionAvailable.class, true);
-      stopSelf(startId);
-      return START_NOT_STICKY;
-    }
-
-    if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
-    mSubscription =
-        mDataManager.syncRibots().subscribeOn(Schedulers.io()).subscribe(new Observer<Ribot>() {
-          @Override public void onCompleted() {
-            Timber.i("Synced successfully!");
-            stopSelf(startId);
-          }
-
-          @Override public void onError(Throwable e) {
-            Timber.w(e, "Error syncing.");
-            stopSelf(startId);
-          }
-
-          @Override public void onNext(Ribot ribot) {
-          }
-        });
-
-    return START_STICKY;
-  }
-
-  @Override public void onDestroy() {
-    if (mSubscription != null) mSubscription.unsubscribe();
-    super.onDestroy();
+    EtobApp.component().inject(this);
   }
 
   @Override public IBinder onBind(Intent intent) {

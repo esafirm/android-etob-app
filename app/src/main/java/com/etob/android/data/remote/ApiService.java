@@ -1,18 +1,23 @@
 package com.etob.android.data.remote;
 
-import com.etob.android.data.model.Ribot;
-import java.util.List;
-import retrofit2.Retrofit;
+import com.etob.android.data.model.BaseResponse;
+import com.etob.android.data.model.Config;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
 import rx.Observable;
 
+//@formatter:off
 public interface ApiService {
 
-  @GET("ribots") Observable<List<Ribot>> getRibots();
+  @GET("config") Observable<Config> getConfig(
+      @Query("config") boolean config
+  );
 
-  class Creator {
-    public static ApiService newRibotsService(Retrofit retrofit) {
-      return retrofit.create(ApiService.class);
-    }
-  }
+  @FormUrlEncoded @POST("track") Observable<BaseResponse> reportLocation(
+      @Field("latitude") double lat,
+      @Field("longitude") double lng
+  );
 }

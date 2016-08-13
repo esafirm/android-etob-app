@@ -7,14 +7,63 @@
     tools:context="com.etob.android.features.main.MainActivity"
     >
 
-  <android.support.v7.widget.RecyclerView
-      android:id="@+id/recycler_view"
+  <android.support.v4.widget.SwipeRefreshLayout
+      android:id="@id/swipeRefreshView"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:clipToPadding="false"
-      android:paddingBottom="6dp"
-      android:paddingTop="6dp"
-      android:scrollbars="vertical"
+      >
+
+    <fragment
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+  </android.support.v4.widget.SwipeRefreshLayout>
+
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignBottom="@id/txtCaption"
+      android:layout_alignParentTop="true"
+      android:background="#8000"
+      />
+
+  <ImageView
+      android:id="@id/imgContent"
+      android:layout_width="80dp"
+      android:layout_height="80dp"
+      android:layout_margin="@dimen/view_padding_horizontal"
+      android:background="@drawable/bg_circle_white"
+      android:padding="@dimen/view_padding_half"
+      tools:ignore="ContentDescription"
+      />
+
+  <TextView
+      android:id="@id/txtName"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignTop="@id/imgContent"
+      android:layout_toEndOf="@id/imgContent"
+      android:layout_toRightOf="@id/imgContent"
+      android:paddingTop="@dimen/view_padding"
+      android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+      android:textColor="@color/white"
+      tools:text="Kumar"
+      />
+
+  <TextView
+      android:id="@id/txtCaption"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignLeft="@id/txtName"
+      android:layout_alignStart="@id/txtName"
+      android:layout_below="@id/txtName"
+      android:layout_marginTop="@dimen/view_padding_tiny"
+      android:paddingBottom="@dimen/view_padding_horizontal"
+      android:textColor="@color/white"
+      tools:text="Rp.100000"
       />
 
 </RelativeLayout>

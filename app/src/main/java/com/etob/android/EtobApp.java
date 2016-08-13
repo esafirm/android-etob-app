@@ -2,17 +2,16 @@ package com.etob.android;
 
 import android.app.Application;
 import com.crashlytics.android.Crashlytics;
+import com.etob.android.data.local.Preferences;
+import com.etob.android.di.component.ApplicationComponent;
+import com.etob.android.di.component.DaggerApplicationComponent;
 import com.etob.android.di.module.ApplicationModule;
-import com.incendiary.androidboilerplate.BuildConfig;
 import com.incendiary.androidcommon.AndroidCommon;
 import com.incendiary.androidcommon.android.ContextProvider;
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
-import com.etob.android.data.local.Preferences;
-import com.etob.android.di.component.ApplicationComponent;
-import com.incendiary.androidboilerplate.di.component.DaggerApplicationComponent;
 
-public class BoilerplateApplication extends Application {
+public class EtobApp extends Application {
 
   ApplicationComponent mApplicationComponent;
 
@@ -41,8 +40,8 @@ public class BoilerplateApplication extends Application {
   /* > AppComponent */
   /* --------------------------------------------------- */
 
-  public static BoilerplateApplication get(){
-    return (BoilerplateApplication) ContextProvider.get();
+  public static EtobApp get(){
+    return (EtobApp) ContextProvider.get();
   }
 
   public static ApplicationComponent component() {
