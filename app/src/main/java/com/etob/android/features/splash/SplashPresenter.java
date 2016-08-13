@@ -12,7 +12,7 @@ public class SplashPresenter extends BasePresenter<SplashView> {
 
   private final DataManager dataManager;
 
-  @Inject  public SplashPresenter(DataManager dataManager) {
+  @Inject public SplashPresenter(DataManager dataManager) {
     this.dataManager = dataManager;
   }
 
