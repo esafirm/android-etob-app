@@ -3,6 +3,7 @@ package com.etob.android.di.module;
 import android.app.Application;
 import android.content.Context;
 import com.etob.android.di.ApplicationContext;
+import com.etob.android.managers.LocationManager;
 import dagger.Module;
 import dagger.Provides;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
@@ -23,6 +24,10 @@ import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 
   @Provides ReactiveLocationProvider provideLocationProvider() {
     return new ReactiveLocationProvider(app);
+  }
+
+  @Provides LocationManager provideLocationManager(ReactiveLocationProvider provider){
+    return new LocationManager(provider);
   }
 
   @Provides @ApplicationContext Context provideContext() {

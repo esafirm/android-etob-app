@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">AndroidBoilerPlate</string>
+  <string name="app_name">Etob</string>
 
   <string name="action_settings">Settings</string>
 
@@ -7,8 +7,4 @@
   <string name="dialog_action_cancel">Cancel</string>
   <string name="dialog_error_title">Sorry</string>
 
-  <string name="empty_ribots">There aren\'t any ribots</string>
-  <string name="error_loading_ribots">There was a problem loading the ribots</string>
-
-  <string name="map_api_key">AIzaSyAg5UQF5HocpfRdiImE3TglikPtbn9OowY</string>
 </resources>

@@ -1,16 +1,27 @@
 package com.etob.android.data.model;
 
+import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 public class Config implements Parcelable {
 
+  private static final int DEFAULT_COLOR = Color.RED;
+
   @SerializedName("icon") private String icon;
   @SerializedName("profile") private ProfileEntity profile;
 
   public String getIcon() {
     return icon;
+  }
+
+  public int getColor() {
+    if (icon == null) return DEFAULT_COLOR;
+    if (icon.equalsIgnoreCase("red")) return Color.RED;
+    if (icon.equalsIgnoreCase("green")) return Color.GREEN;
+    if (icon.equalsIgnoreCase("blue")) return Color.BLUE;
+    return DEFAULT_COLOR;
   }
 
   public ProfileEntity getProfile() {

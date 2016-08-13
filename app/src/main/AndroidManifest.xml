@@ -15,12 +15,15 @@
       android:theme="@style/AppTheme"
       tools:replace="android:allowBackup">
 
+    <!--Meta Data-->
+    <meta-data
+        android:name="com.google.android.gms.version"
+        android:value="@integer/google_play_services_version"/>
     <meta-data
         android:name="com.google.android.geo.API_KEY"
-        android:value="@string/map_api_key"/>
+        android:value="AIzaSyAg5UQF5HocpfRdiImE3TglikPtbn9OowY"/>
 
     <!--Activity-->
-
     <activity
         android:name="com.etob.android.features.splash.SplashAct"
         android:theme="@style/AppTheme.NoActionBar"
@@ -36,15 +39,7 @@
         android:name="com.etob.android.features.main.MainActivity"
         android:label="@string/app_name"/>
 
-    <service android:name="com.etob.android.data.SyncService"/>
-
-    <receiver
-        android:name="com.etob.android.data.SyncService$SyncOnConnectionAvailable"
-        android:enabled="false">
-      <intent-filter>
-        <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-      </intent-filter>
-    </receiver>
+    <service android:name=".services.TrackingService"/>
 
   </application>
 

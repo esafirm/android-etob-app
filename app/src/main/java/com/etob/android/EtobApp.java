@@ -1,14 +1,13 @@
 package com.etob.android;
 
 import android.app.Application;
-import com.crashlytics.android.Crashlytics;
 import com.etob.android.data.local.Preferences;
 import com.etob.android.di.component.ApplicationComponent;
 import com.etob.android.di.component.DaggerApplicationComponent;
 import com.etob.android.di.module.ApplicationModule;
 import com.incendiary.androidcommon.AndroidCommon;
 import com.incendiary.androidcommon.android.ContextProvider;
-import io.fabric.sdk.android.Fabric;
+import rx_activity_result.RxActivityResult;
 import timber.log.Timber;
 
 public class EtobApp extends Application {
@@ -17,14 +16,17 @@ public class EtobApp extends Application {
 
   @Override public void onCreate() {
     super.onCreate();
-
     if (BuildConfig.DEBUG) {
       Timber.plant(new Timber.DebugTree());
-      Fabric.with(this, new Crashlytics());
     }
 
     setupStorage();
     setupAndroidCommon();
+    setupRxActivityResult();
+  }
+
+  private void setupRxActivityResult() {
+    RxActivityResult.register(this);
   }
 
   private void setupStorage() {
@@ -40,7 +42,7 @@ public class EtobApp extends Application {
   /* > AppComponent */
   /* --------------------------------------------------- */
 
-  public static EtobApp get(){
+  public static EtobApp get() {
     return (EtobApp) ContextProvider.get();
   }
 

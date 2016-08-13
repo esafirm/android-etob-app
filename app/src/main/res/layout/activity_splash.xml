@@ -11,9 +11,10 @@
 
   <ImageView
       android:id="@id/imgContent"
-      android:layout_width="180dp"
-      android:layout_height="180dp"
+      android:layout_width="160dp"
+      android:layout_height="160dp"
       tools:ignore="ContentDescription"
+      android:src="@mipmap/ic_launcher"
       />
 
   <ProgressBar

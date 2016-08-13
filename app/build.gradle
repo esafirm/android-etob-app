@@ -34,6 +34,7 @@ android {
     }
 
     debug {
+      signingConfig signingConfigs.debug
       versionNameSuffix " Debug"
       debuggable true
     }
@@ -42,6 +43,10 @@ android {
       sourceCompatibility JavaVersion.VERSION_1_8
       targetCompatibility JavaVersion.VERSION_1_8
     }
+  }
+
+  buildTypes.each{
+    it.resValue 'string', 'map_key', "$MAP_KEY"
   }
 
   sourceSets {
@@ -102,13 +107,12 @@ dependencies {
   compile 'com.github.bumptech.glide:glide:3.7.0'
   compile 'io.reactivex:rxandroid:1.2.1'
   compile 'io.reactivex:rxjava:1.1.9'
-  compile('com.crashlytics.sdk.android:crashlytics:2.5.7@aar') {
-    transitive = true;
-  }
 
   //Location
   compile 'pl.charmas.android:android-reactive-location:0.9@aar'
-  compile "com.github.VictorAlbertos:RxActivityResult:0.3.4"
+
+  //Utils
+  compile "com.github.VictorAlbertos:RxActivityResult:0.3.5"
 
   compile 'com.jakewharton.timber:timber:4.1.2'
   compile "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"

@@ -1,4 +1,4 @@
-package com.etob.android.util;
+package com.etob.android.util.rx;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
