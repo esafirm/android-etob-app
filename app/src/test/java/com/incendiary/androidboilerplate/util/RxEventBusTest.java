@@ -1,5 +1,6 @@
 package com.incendiary.androidboilerplate.util;
 
+import com.etob.android.util.RxEventBus;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

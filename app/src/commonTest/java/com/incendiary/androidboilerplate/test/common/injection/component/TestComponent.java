@@ -3,7 +3,7 @@ package com.incendiary.androidboilerplate.test.common.injection.component;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import com.incendiary.androidboilerplate.di.component.ApplicationComponent;
+import com.etob.android.di.component.ApplicationComponent;
 import com.incendiary.androidboilerplate.test.common.injection.module.ApplicationTestModule;
 
 @Singleton

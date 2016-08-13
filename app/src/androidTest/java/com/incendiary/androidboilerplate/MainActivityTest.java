@@ -12,10 +12,10 @@ import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 import rx.Observable;
-import com.incendiary.androidboilerplate.data.model.Ribot;
+import com.etob.android.data.model.Ribot;
 import com.incendiary.androidboilerplate.test.common.TestComponentRule;
 import com.incendiary.androidboilerplate.test.common.TestDataFactory;
-import com.incendiary.androidboilerplate.features.main.MainActivity;
+import com.etob.android.features.main.MainActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;

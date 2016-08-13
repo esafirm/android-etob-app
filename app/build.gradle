@@ -4,15 +4,13 @@ apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply from: '../config/quality/quality.gradle'
 apply from: 'versioning.gradle'
-//TODO uncomment line below after adding fabric api secret and key to fabric.properties
-//apply plugin: 'io.fabric'
 
 android {
   compileSdkVersion 24
   buildToolsVersion '24'
 
   defaultConfig {
-    applicationId 'uk.co.ribot.androidboilerplate'
+    applicationId 'com.etob.android'
     minSdkVersion 16
     targetSdkVersion 24
     testInstrumentationRunner "${applicationId}.runner.RxAndroidJUnitRunner"
@@ -21,16 +19,6 @@ android {
   }
 
   signingConfigs {
-    // You must set up an environment var before release signing
-    // Run: export APP_KEY={password}
-    // TODO Add your release keystore in /keystore folder
-    release {
-      storeFile file('keystore/release.keystore')
-      keyAlias 'esa'
-      storePassword "$System.env.APP_KEY"
-      keyPassword "$System.env.APP_KEY"
-    }
-
     debug {
       storeFile file('keystore/debug.keystore')
       keyAlias 'androiddebugkey'
@@ -41,13 +29,8 @@ android {
 
   buildTypes {
     release {
-      signingConfig signingConfigs.release
-
       minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-      ext.betaDistributionReleaseNotesFilePath =
-          file('../crashlytics_release_notes.txt').absolutePath
     }
 
     debug {

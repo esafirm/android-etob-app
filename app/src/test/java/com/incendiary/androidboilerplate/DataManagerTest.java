@@ -9,10 +9,10 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import rx.Observable;
 import rx.observers.TestSubscriber;
-import com.incendiary.androidboilerplate.data.DataManager;
-import com.incendiary.androidboilerplate.data.local.DatabaseHelper;
-import com.incendiary.androidboilerplate.data.model.Ribot;
-import com.incendiary.androidboilerplate.data.remote.ApiService;
+import com.etob.android.data.DataManager;
+import com.etob.android.data.local.DatabaseHelper;
+import com.etob.android.data.model.Ribot;
+import com.etob.android.data.remote.ApiService;
 import com.incendiary.androidboilerplate.test.common.TestDataFactory;
 
 import static org.mockito.Matchers.anyListOf;

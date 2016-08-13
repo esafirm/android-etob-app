@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import com.incendiary.androidboilerplate.data.model.Name;
-import com.incendiary.androidboilerplate.data.model.Profile;
-import com.incendiary.androidboilerplate.data.model.Ribot;
+import com.etob.android.data.model.Name;
+import com.etob.android.data.model.Profile;
+import com.etob.android.data.model.Ribot;
 
 /**
  * Factory class that makes instances of data models with random field values.

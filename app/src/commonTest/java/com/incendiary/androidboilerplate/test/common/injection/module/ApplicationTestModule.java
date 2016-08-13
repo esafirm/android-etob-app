@@ -5,9 +5,9 @@ import android.content.Context;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
-import com.incendiary.androidboilerplate.data.DataManager;
-import com.incendiary.androidboilerplate.data.remote.ApiService;
-import com.incendiary.androidboilerplate.di.ApplicationContext;
+import com.etob.android.data.DataManager;
+import com.etob.android.data.remote.ApiService;
+import com.etob.android.di.ApplicationContext;
 
 import static org.mockito.Mockito.mock;
 
