@@ -15,8 +15,8 @@ import timber.log.Timber;
  */
 public class LocationManager {
 
-  private static final long INTERVAL = TimeUnit.SECONDS.toMillis(30);
-  private static final int MIN_MOVE_DISTANCE_IN_METER = 2;
+  private static final long INTERVAL = TimeUnit.SECONDS.toMillis(10);
+  private static final int MIN_MOVE_DISTANCE_IN_METER = 10;
 
   private final ReactiveLocationProvider locationProvider;
   private final BehaviorSubject<Location> subject = BehaviorSubject.create();
@@ -31,14 +31,13 @@ public class LocationManager {
   private void init() {
     LocationRequest request = LocationRequest.create()
         .setInterval(INTERVAL)
-        .setFastestInterval(INTERVAL / 2)
+        .setFastestInterval(INTERVAL / 3)
         .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
     locationProvider.getUpdatedLocation(request)
         .subscribeOn(Schedulers.io())
         .filter(o -> o != null)
         .doOnNext(location -> Timber.d("Get location update %s", location.toString()))
-        .doOnNext(location -> lastLocation = location)
         .forEach(subject::onNext);
   }
 
@@ -48,6 +47,7 @@ public class LocationManager {
 
   public Observable<Location> getMovingLocationUpdate() {
     return subject.filter(location -> lastLocation == null
-        || location.distanceTo(lastLocation) >= MIN_MOVE_DISTANCE_IN_METER);
+        || location.distanceTo(lastLocation) >= MIN_MOVE_DISTANCE_IN_METER)
+        .doOnNext(location -> lastLocation = location);
   }
 }

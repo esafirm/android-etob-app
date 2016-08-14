@@ -2,6 +2,7 @@ package com.etob.android.di.component;
 
 import android.app.Application;
 import android.content.Context;
+import android.hardware.SensorManager;
 import com.etob.android.data.DataManager;
 import com.etob.android.services.TrackingService;
 import com.etob.android.data.remote.ApiService;
@@ -26,4 +27,5 @@ import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
   DataManager dataManager();
   RxEventBus eventBus();
   ReactiveLocationProvider locationProvider();
+  SensorManager sensorManager();
 }

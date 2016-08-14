@@ -45,7 +45,7 @@ android {
     }
   }
 
-  buildTypes.each{
+  buildTypes.each {
     it.resValue 'string', 'map_key', "$MAP_KEY"
   }
 
@@ -113,6 +113,7 @@ dependencies {
 
   //Utils
   compile "com.github.VictorAlbertos:RxActivityResult:0.3.5"
+  compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
 
   compile 'com.jakewharton.timber:timber:4.1.2'
   compile "com.jakewharton:butterknife:$BUTTERKNIFE_VERSION"

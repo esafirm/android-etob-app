@@ -10,4 +10,5 @@ public interface MainMvpView extends MvpView {
   void showProfile(Config.ProfileEntity profileEntity);
   void showCurrentLocation(Location location);
   void showError(Throwable throwable);
+  void updateHeading(float rotation);
 }

@@ -9,14 +9,17 @@ import com.etob.android.data.local.Preferences;
 import com.etob.android.di.ConfigPersistent;
 import com.etob.android.features.common.BasePresenter;
 import com.etob.android.managers.LocationManager;
+import com.etob.android.managers.OrientationManager;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.CompositeSubscription;
 import rx_activity_result.RxActivityResult;
 import timber.log.Timber;
@@ -27,9 +30,12 @@ import timber.log.Timber;
   private ReactiveLocationProvider locationProvider = EtobApp.component().locationProvider();
 
   private final LocationManager locationManager;
+  private final OrientationManager orientationManager;
 
-  @Inject public MainPresenter(LocationManager locationManager) {
+  @Inject
+  public MainPresenter(LocationManager locationManager, OrientationManager orientationManager) {
     this.locationManager = locationManager;
+    this.orientationManager = orientationManager;
   }
 
   @Override public void attachView(MainMvpView mvpView) {
@@ -58,10 +64,25 @@ import timber.log.Timber;
           }
         })
         .doOnTerminate(() -> getView().showLoading(false))
+        .doOnNext(location -> startUpdatingHeading())
+        .doOnNext(location -> startUpdatingLocation())
         .subscribe(location -> getView().showCurrentLocation(location), (throwable) -> {
           Timber.e(throwable, "loadCurrentLocationError");
           getView().showError(throwable);
         }));
+  }
+
+  private void startUpdatingLocation() {
+    mSubscription.add(locationManager.getLocationUpdate()
+        .subscribe(location -> getView().showCurrentLocation(location)));
+  }
+
+  private void startUpdatingHeading() {
+    mSubscription.add(orientationManager.getOrientation()
+        .throttleLast(2500, TimeUnit.MILLISECONDS)
+        .map(e -> OrientationManager.getDegreeValue(e.getAzimuth()))
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(aFloat -> getView().updateHeading(aFloat)));
   }
 
   private Observable<Location> getCurrentLocation() {

@@ -1,5 +1,6 @@
 package com.etob.android.features.splash;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
@@ -10,6 +11,8 @@ import butterknife.ButterKnife;
 import com.etob.android.R;
 import com.etob.android.features.common.BaseActivity;
 import com.etob.android.features.main.MainActivity;
+import com.incendiary.androidcommon.android.Toasts;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import javax.inject.Inject;
 
 /**
@@ -17,7 +20,7 @@ import javax.inject.Inject;
  */
 public class SplashAct extends BaseActivity implements SplashView {
 
-  private static final int ANIMATION_DURATION = 300 ;
+  private static final int ANIMATION_DURATION = 300;
 
   @BindView(R.id.imgContent) ImageView imgContent;
 
@@ -33,6 +36,19 @@ public class SplashAct extends BaseActivity implements SplashView {
     imgContent.setTranslationY(100f);
     imgContent.setAlpha(0f);
 
+    RxPermissions.getInstance(this)
+        .request(Manifest.permission.ACCESS_FINE_LOCATION)
+        .subscribe(aBoolean -> {
+          if (aBoolean) {
+            init();
+          } else {
+            finish();
+            Toasts.show("You should allow location permission to use this app");
+          }
+        });
+  }
+
+  private void init() {
     ViewCompat.animate(imgContent)
         .setDuration(ANIMATION_DURATION)
         .alpha(1f)

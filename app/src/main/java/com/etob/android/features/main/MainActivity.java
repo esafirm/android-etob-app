@@ -2,8 +2,9 @@ package com.etob.android.features.main;
 
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,6 +20,8 @@ import com.etob.android.util.maps.GoogleMapUtils;
 import com.etob.android.util.rx.RxGoogleMap;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.incendiary.androidcommon.android.Toasts;
 import com.incendiary.androidcommon.android.text.Strings;
 import javax.inject.Inject;
@@ -28,11 +31,12 @@ public class MainActivity extends BaseActivity implements MainMvpView {
   @BindView(R.id.imgContent) ImageView imgContent;
   @BindView(R.id.txtName) TextView txtName;
   @BindView(R.id.txtCaption) TextView txtBalance;
-  @BindView(R.id.swipeRefreshView) SwipeRefreshLayout swipeRefreshLayout;
+  @BindView(R.id.pbLoad) ProgressBar progressBar;
 
   @Inject MainPresenter presenter;
 
   private GoogleMap mGoogleMap;
+  private Marker marker;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -48,9 +52,6 @@ public class MainActivity extends BaseActivity implements MainMvpView {
 
     presenter.attachView(this);
     presenter.loadProfile();
-
-    swipeRefreshLayout.setDistanceToTriggerSync(Integer.MAX_VALUE);
-    swipeRefreshLayout.setColorSchemeResources(R.color.primary);
 
     SupportMapFragment mapFragment = ActivityHelper.findFragment(this, R.id.map);
     RxGoogleMap.bind(mapFragment).subscribe(googleMap -> {
@@ -75,8 +76,14 @@ public class MainActivity extends BaseActivity implements MainMvpView {
   }
 
   @Override public void showCurrentLocation(Location location) {
-    GoogleMapUtils.moveCamera(mGoogleMap, location.getLatitude(), location.getLongitude());
-    GoogleMapUtils.addMyLocationMarker(mGoogleMap, location);
+    GoogleMapUtils.moveCamera(mGoogleMap, location.getLatitude(), location.getLongitude(),
+        marker != null);
+
+    if (marker == null) {
+      marker = GoogleMapUtils.addMyLocationMarker(mGoogleMap, location);
+    } else {
+      marker.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+    }
   }
 
   @Override public void showError(Throwable throwable) {
@@ -86,7 +93,14 @@ public class MainActivity extends BaseActivity implements MainMvpView {
   }
 
   @Override public void showLoading(boolean isLoading) {
-    swipeRefreshLayout.setRefreshing(isLoading);
+    progressBar.setVisibility(isLoading
+        ? View.VISIBLE
+        : View.GONE);
+  }
+
+  @Override public void updateHeading(float rotation) {
+    if (marker == null) return;
+    GoogleMapUtils.rotateMarker(marker, rotation);
   }
 
   @OnClick(R.id.btnInfo) void onMyLocationClick() {
