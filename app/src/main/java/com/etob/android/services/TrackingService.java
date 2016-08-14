@@ -41,8 +41,8 @@ public class TrackingService extends Service {
   }
 
   @Override public void onDestroy() {
+    Timber.d("Tracking Service destroyed ..");
     super.onDestroy();
-    Timber.w("Tracking Service destroyed ..");
   }
 
   /* --------------------------------------------------- */
