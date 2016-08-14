@@ -7,4 +7,5 @@ import com.etob.android.features.common.MvpView;
  */
 public interface SplashView extends MvpView {
   void showConfigLoaded();
+  void showError(Throwable throwable);
 }

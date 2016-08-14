@@ -23,6 +23,7 @@ import rx.Observable;
 
   public Observable<BaseResponse> reportLocation(Location location) {
     return mApiService.reportLocation(location.getLatitude(), location.getLongitude())
-        .compose(Transformers.applyApiCall());
+        .compose(Transformers.applyApiCall())
+        .retry();
   }
 }

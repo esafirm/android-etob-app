@@ -19,6 +19,6 @@ public class SplashPresenter extends BasePresenter<SplashView> {
   public void loadConfig() {
     dataManager.getConfig().doOnNext(Preferences::saveConfig).subscribe(config -> {
       getView().showConfigLoaded();
-    });
+    }, throwable -> getView().showError(throwable));
   }
 }

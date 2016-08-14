@@ -60,6 +60,14 @@ public class SplashAct extends BaseActivity implements SplashView {
         });
   }
 
+  @Override public void showError(Throwable throwable) {
+    String message = throwable != null
+        ? throwable.getMessage()
+        : "Connection Error";
+    Toasts.show(message);
+    finish();
+  }
+
   @Override public void showConfigLoaded() {
     finish();
     startActivity(new Intent(this, MainActivity.class));

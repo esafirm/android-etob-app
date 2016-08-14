@@ -30,9 +30,9 @@ import timber.log.Timber;
         new HttpLoggingInterceptor(message -> Timber.d(message));
     loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-    return new OkHttpClient.Builder().connectTimeout(40, TimeUnit.SECONDS)
-        .writeTimeout(40, TimeUnit.SECONDS)
-        .readTimeout(40, TimeUnit.SECONDS)
+    return new OkHttpClient.Builder().connectTimeout(20, TimeUnit.SECONDS)
+        .writeTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(15, TimeUnit.SECONDS)
         .addInterceptor(loggingInterceptor)
         .build();
   }
