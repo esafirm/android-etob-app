@@ -29,15 +29,24 @@
     @butterknife.* <methods>;
 }
 
-# Retrofit rules
--dontwarn retrofit.**
--keep class retrofit.** { *; }
+# Retrofit 2.X
+## https://square.github.io/retrofit/ ##
+
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
 -keepattributes Signature
 -keepattributes Exceptions
 
-# OkHttp rules
--dontwarn okio.**
--dontwarn com.squareup.okhttp.**
+-keepclasseswithmembers class * {
+    @retrofit2.http.* <methods>;
+}
+
+# OkHttp 3.x
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**
 
 # Otto rules
 -keepclassmembers class ** {
@@ -58,19 +67,13 @@
 
 # Gson rules
 -keepattributes Signature
+-keepattributes Annotation
 -keep class sun.misc.Unsafe { *; }
-# TODO change to match your package model
-# Keep non static or private fields of models so Gson can find their names
--keepclassmembers class uk.co.ribot.androidboilerplate.data.model.** {
-    !static !private <fields>;
-}
-# TODO change to match your Retrofit services (only if using inner models withing the service)
-# Some models used by gson are inner classes inside the retrofit service
--keepclassmembers class uk.co.ribot.androidboilerplate.data.remote.ApiService$** {
-    !static !private <fields>;
-}
 
 # Produces useful obfuscated stack traces
 # http://proguard.sourceforge.net/manual/examples.html#stacktrace
 -renamesourcefileattribute SourceFile
 -keepattributes SourceFile,LineNumberTable
+
+# RetroLamda
+-dontwarn java.lang.invoke.*
