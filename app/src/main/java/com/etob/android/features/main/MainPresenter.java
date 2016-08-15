@@ -15,6 +15,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.incendiary.androidcommon.android.Toasts;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import pl.charmas.android.reactivelocation.ReactiveLocationProvider;
@@ -82,7 +83,9 @@ import timber.log.Timber;
         .throttleLast(2500, TimeUnit.MILLISECONDS)
         .map(e -> OrientationManager.getDegreeValue(e.getAzimuth()))
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(aFloat -> getView().updateHeading(aFloat)));
+        .subscribe(aFloat -> getView().updateHeading(aFloat), throwable -> {
+          Toasts.show("It's seems like your device is lack the sensor we need");
+        }));
   }
 
   private Observable<Location> getCurrentLocation() {
